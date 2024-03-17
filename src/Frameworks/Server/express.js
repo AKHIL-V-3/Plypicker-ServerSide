@@ -1,36 +1,37 @@
-const authRouter = require("../../Routes/authRouter")
+const authRouter = require("../../Routes")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 const logger = require('morgan')
+const express = require("express")
 require("dotenv").config()
 
 function expressConfig(app) {
 
-      app.use(bodyParser.json())
-      app.use(cookieParser())
       app.use(cors({
             origin: 'http://localhost:5173',
             credentials: true,
-      }))
-      app.use(logger("dev"))
-      app.use(
-            bodyParser.urlencoded({
-                  limit: "50mb",
-                  extended: true,
-                  parameterLimit: 50000,
-            })
-      );
-      app.use('/auth', authRouter)
+      }));
+      app.use(cookieParser());
+      app.use(express.static('public'));
+      app.use(logger('dev'));
+      app.use(bodyParser.json({ limit: '100mb' }));
+      app.use('/auth', authRouter);
+
+      // Error handling middleware should be placed at the end
+      app.use((err, req, res, next) => {
+            // Handle the error here
+            res.status(500).json({ error: 'Something went wrong' });
+      });
 }
 function serverConfig(server) {
       server.listen(process.env.PORT, () => {
             console.log(`Server started on ${process.env.PORT}`);
       })
 }
-const express = {
+const Express = {
       expressConfig,
       serverConfig
 }
 
-module.exports = express
+module.exports = Express
