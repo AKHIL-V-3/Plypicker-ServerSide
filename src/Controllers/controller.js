@@ -168,9 +168,9 @@ const authController = () => {
             const savedImagePaths = await Promise.all(
                 images.map(async (base64Image, index) => {
                   const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
-                  const imagePath = path.join(__dirname ,'..','..', 'public', `image${reviewData.productId}.png`);
+                  const imagePath = path.join(__dirname ,'..','..', 'public', `image${index}${reviewData.productId}.png`);
                   fs.writeFileSync(imagePath, base64Data, 'base64');
-                  return `${process.env.SERVER_URL}/image${index}.png`; // Return the path to the saved image
+                  return `${process.env.SERVER_URL}/image${index}${reviewData.productId}.png`; // Return the path to the saved image
                 })
               );
 
@@ -190,9 +190,9 @@ const authController = () => {
             const savedImagePaths = await Promise.all(
                 images.map(async (base64Image, index) => {
                   const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
-                  const imagePath = path.join(__dirname ,'..','..', 'public', `image${productData.productId}.png`);
+                  const imagePath = path.join(__dirname ,'..','..', 'public', `image${index}${productData.productId}.png`);
                   fs.writeFileSync(imagePath, base64Data, 'base64');
-                  return `/image${index}.png`; // Return the path to the saved image
+                  return `${process.env.SERVER_URL}/image${index}${productData.productId}.png`; // Return the path to the saved image
                 })
               );
 
